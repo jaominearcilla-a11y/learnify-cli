@@ -171,7 +171,7 @@ class Program
             Console.WriteLine("PRESS ENTER TO CONTINUE.");
             Console.ReadLine();
         }
-        //  haha gumana
+
         Console.Clear();
         Typewriter("--- FINAL EVALUATION ---");
         Typewriter($"RESULT: {score} OUT OF {questions.Count} CORRECT.");
