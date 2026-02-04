@@ -22,7 +22,7 @@ class Program
         Console.BackgroundColor = ConsoleColor.Black;
         Console.Clear();
 
-        Typewriter(">> LEARNIFY CORP (TM) TERMLINK 2026");
+        Typewriter(">> LEARNIFY COR(TM) TERMLINK 2026");
         Typewriter(">> INITIALIZING LEARNIFY PROTOCOLS...");
 
         bool running = true;
