@@ -7,8 +7,11 @@ namespace Learnify_prtp;
 class Question
 {
     public string Text { get; set; }
+   
     public string[] Choices { get; set; }
+   
     public string CorrectAnswer { get; set; }
+   
     public string Difficulty { get; set; }
 }
 
@@ -20,6 +23,7 @@ class Program
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.BackgroundColor = ConsoleColor.Black;
+        Console.CursorVisible = false;
         Console.Clear();
 
         Typewriter(">> LEARNIFY CORP (TM) TERMLINK 2026");
@@ -28,19 +32,11 @@ class Program
         bool running = true;
         while (running)
         {
-            Console.Clear();
-            Console.WriteLine("=== LEARNIFY TERMINAL - MAIN MENU ===");
-            Console.WriteLine("-------------------------------------");
-            Console.WriteLine("1. [CREATE] NEW QUIZ DATA");
-            Console.WriteLine("2. [ACCESS] EXISTING QUIZ");
-            Console.WriteLine("3. [EXIT] TERMINAL");
-            Console.WriteLine("-------------------------------------");
-            Console.Write("\nENTER SELECTION: ");
+            string[] menuOptions = {"[CREATE] NEW QUIZ DATA", "[ACCESS]EXISTING QUIZ", "[EXIT] TERMINAL" };
 
-            string choice = Console.ReadLine();
-            if (choice == "1") CreateQuiz();
-            else if (choice == "2") SelectAndTakeQuiz();
-            else if (choice == "3") running = false;
+          if (selected == 0) CreateQuiz();
+            else if (selected == 1) SelectAndTakeQuiz();
+            else if (selected == 2) running = false;
         }
     }
 
@@ -53,13 +49,71 @@ class Program
         }
         Console.WriteLine();
     }
-
-    static void CreateQuiz()
+ }    
+     static int MenuSelector(string title, string[] options) 
     {
-        Console.Clear();
-        Typewriter(">> ENTER NAME FOR NEW QUIZ:");
-        string quizName = Console.ReadLine();
+        int currentIndex = 0;
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine(title);
+            Console.WriteLine("-------------------------------------");
 
+            for (int i = 0; i < options.Length; i++)
+            {
+                if (i == currentIndex)
+                {
+                    
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.WriteLine($"> {options[i]} ");
+                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                else
+                {
+                    Console.WriteLine($"  {options[i]} ");
+                }
+            }
+            Console.WriteLine("-------------------------------------");
+            Console.WriteLine("\n(Use UP/DOWN Arrows & Press ENTER)");
+
+            var key = Console.ReadKey(true).Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                currentIndex = (currentIndex == 0) ? options.Length - 1 : currentIndex - 1;
+                Console.Beep(1200, 20); 
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                currentIndex = (currentIndex == options.Length - 1) ? 0 : currentIndex + 1;
+                Console.Beep(1200, 20);
+            }
+            else if (key == ConsoleKey.Enter)
+            {
+                Console.Beep(800, 100); 
+                return currentIndex;
+            }
+        }
+    }
+   static void Typewriter(string text)
+    {
+        foreach (char c in text)
+        {
+            Console.Write(c);
+            System.Threading.Thread.Sleep(15);
+        }
+        Console.WriteLine();
+    }
+   
+    static void CreateQuiz()   
+    {     
+        Console.Clear()
+        Console.CursorVisible
+        Typewriter(">> ENTER NAME FOR NEW QUIZ:");
+        string quizName = Console.ReadLine() ?? "";
+        
         if (!allQuizzes.ContainsKey(quizName)) allQuizzes.Add(quizName, new List<Question>());
         // Pick the mode for all the questions
         Console.WriteLine("\nSELECT MODE FOR ALL QUESTIONS IN THIS QUIZ:");
@@ -105,11 +159,10 @@ class Program
                 q.CorrectAnswer = Console.ReadLine();
             }
 
-            allQuizzes[quizName].Add(q);
-        }
+            allQuizzes[quizName].Add(q);        
         Typewriter("\n>> DATA COMPILED SUCCESSFULLY.");
         Console.ReadKey();
-    }
+   }
 
     static void SelectAndTakeQuiz()
     {
