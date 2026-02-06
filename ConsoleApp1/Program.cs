@@ -39,7 +39,7 @@ class Program
         }
     }
 
-    // --- THE ARROW KEY NAVIGATION SYSTEM ---
+    // arrow key navigation
     static int MenuSelector(string title, string[] options)
     {
         int currentIndex = 0;
@@ -73,7 +73,7 @@ class Program
             {
                 currentIndex = (currentIndex == 0) ? options.Length - 1 : currentIndex - 1;
                 Console.Beep(); 
-            } // Added missing brace here
+            } 
             else if (key == ConsoleKey.DownArrow)
             {
                 currentIndex = (currentIndex == options.Length - 1) ? 0 : currentIndex + 1;
