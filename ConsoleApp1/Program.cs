@@ -6,14 +6,15 @@ namespace Learnify_prtp;
 
 class Question
 {
-        public string Text { get; set; }
-        public string[] Choices { get; set; }
-        public string CorrectAnswer { get; set; }
+    public string Text { get; set; }
+    public string[] Choices { get; set; }
+    public string CorrectAnswer { get; set; }
     public string Difficulty { get; set; }
 }
 
 class Program
-{}
+{
+    // These must stay inside the Program class braces
     static Dictionary<string, List<Question>> allQuizzes = new Dictionary<string, List<Question>>();
 
     static void Main()
@@ -52,7 +53,6 @@ class Program
             {
                 if (i == currentIndex)
                 {
-                    
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.WriteLine($"> {options[i]} ");
@@ -73,7 +73,7 @@ class Program
             {
                 currentIndex = (currentIndex == 0) ? options.Length - 1 : currentIndex - 1;
                 Console.Beep(); 
-            
+            } // Added missing brace here
             else if (key == ConsoleKey.DownArrow)
             {
                 currentIndex = (currentIndex == options.Length - 1) ? 0 : currentIndex + 1;
@@ -116,11 +116,11 @@ class Program
         for (int i = 0; i < count; i++)
         {
             Question q = new Question();
-                Console.WriteLine($"\n-- ENTRY {i + 1} --");
+            Console.WriteLine($"\n-- ENTRY {i + 1} --");
             Console.Write("INPUT QUESTION: ");
             q.Text = Console.ReadLine();
 
-             if (typeChoice == 0) // Easy
+            if (typeChoice == 0) // Easy
             {
                 q.Difficulty = "Easy";
                 q.Choices = new string[] { "True", "False" };
@@ -173,11 +173,10 @@ class Program
         int score = 0;
 
         foreach (var q in questions)
-            {
+        {
             string userAnswer = "";
             if (q.Difficulty == "Easy" || q.Difficulty == "Medium")
             {
-                // For quiz choices same arrow key selector
                 int choiceIndex = MenuSelector($">> {name} | {q.Difficulty.ToUpper()} <<\n\n{q.Text}", q.Choices);
                 
                 if (q.Difficulty == "Easy")
@@ -185,17 +184,17 @@ class Program
                 else
                     userAnswer = ((char)('A' + choiceIndex)).ToString();
             }
-        else
-        {
-            Console.Clear();
-            Console.CursorVisible = true;
-            Console.WriteLine($">> {name} | HARD <<\n------------------");
-            Typewriter(q.Text);
-            
-            Console.Write("\nTYPE YOUR ANSWER: ");
-            userAnswer = Console.ReadLine();
-            Console.CursorVisible = false;
-        }
+            else
+            {
+                Console.Clear();
+                Console.CursorVisible = true;
+                Console.WriteLine($">> {name} | HARD <<\n------------------");
+                Typewriter(q.Text);
+                
+                Console.Write("\nTYPE YOUR ANSWER: ");
+                userAnswer = Console.ReadLine();
+                Console.CursorVisible = false;
+            }
 
             if (userAnswer.Trim().Equals(q.CorrectAnswer.Trim(), StringComparison.OrdinalIgnoreCase))
             {
