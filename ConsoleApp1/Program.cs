@@ -33,7 +33,7 @@ class Program
             string[] menuOptions = { "[CREATE] NEW QUIZ DATA", "[ACCESS] EXISTING QUIZ", "[EXIT] TERMINAL" };
             int selected = MenuSelector("=== LEARNIFY TERMINAL - MAIN MENU ===", menuOptions);
 
-            if (selected == 0) CreateQuiz();A
+            if (selected == 0) CreateQuiz();
             else if (selected == 1) SelectAndTakeQuiz();
             else if (selected == 2) running = false;
         }
