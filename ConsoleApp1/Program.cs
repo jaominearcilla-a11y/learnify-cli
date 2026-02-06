@@ -14,7 +14,7 @@ class Question
 
 class Program
 {
-    // These must stay inside the Program class braces
+    
     static Dictionary<string, List<Question>> allQuizzes = new Dictionary<string, List<Question>>();
 
     static void Main()
@@ -39,7 +39,7 @@ class Program
         }
     }
 
-    // --- THE ARROW KEY NAVIGATION SYSTEM ---
+    // arrow key navitagion
     static int MenuSelector(string title, string[] options)
     {
         int currentIndex = 0;
