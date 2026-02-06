@@ -7,23 +7,20 @@ namespace Learnify_prtp;
 class Question
 {
     public string Text { get; set; }
-   
     public string[] Choices { get; set; }
-   
     public string CorrectAnswer { get; set; }
-   
     public string Difficulty { get; set; }
 }
 
 class Program
-{
+{}
     static Dictionary<string, List<Question>> allQuizzes = new Dictionary<string, List<Question>>();
 
     static void Main()
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.BackgroundColor = ConsoleColor.Black;
-        Console.CursorVisible = false;
+        Console.CursorVisible = false; 
         Console.Clear();
 
         Typewriter(">> LEARNIFY CORP (TM) TERMLINK 2026");
@@ -32,25 +29,17 @@ class Program
         bool running = true;
         while (running)
         {
-            string[] menuOptions = {"[CREATE] NEW QUIZ DATA", "[ACCESS]EXISTING QUIZ", "[EXIT] TERMINAL" };
+            string[] menuOptions = { "[CREATE] NEW QUIZ DATA", "[ACCESS] EXISTING QUIZ", "[EXIT] TERMINAL" };
+            int selected = MenuSelector("=== LEARNIFY TERMINAL - MAIN MENU ===", menuOptions);
 
-          if (selected == 0) CreateQuiz();
+            if (selected == 0) CreateQuiz();
             else if (selected == 1) SelectAndTakeQuiz();
             else if (selected == 2) running = false;
         }
     }
 
-    static void Typewriter(string text)
-    {
-        foreach (char c in text)
-        {
-            Console.Write(c);
-            System.Threading.Thread.Sleep(20);
-        }
-        Console.WriteLine();
-    }
- }    
-     static int MenuSelector(string title, string[] options) 
+    // --- THE ARROW KEY NAVIGATION SYSTEM ---
+    static int MenuSelector(string title, string[] options)
     {
         int currentIndex = 0;
         while (true)
@@ -83,21 +72,22 @@ class Program
             if (key == ConsoleKey.UpArrow)
             {
                 currentIndex = (currentIndex == 0) ? options.Length - 1 : currentIndex - 1;
-                Console.Beep(1200, 20); 
-            }
+                Console.Beep(); 
+            
             else if (key == ConsoleKey.DownArrow)
             {
                 currentIndex = (currentIndex == options.Length - 1) ? 0 : currentIndex + 1;
-                Console.Beep(1200, 20);
+                Console.Beep();
             }
             else if (key == ConsoleKey.Enter)
             {
-                Console.Beep(800, 100); 
+                Console.Beep(); 
                 return currentIndex;
             }
         }
     }
-   static void Typewriter(string text)
+
+    static void Typewriter(string text)
     {
         foreach (char c in text)
         {
@@ -106,41 +96,38 @@ class Program
         }
         Console.WriteLine();
     }
-   
-    static void CreateQuiz()   
-    {     
-        Console.Clear()
-        Console.CursorVisible
-        Typewriter(">> ENTER NAME FOR NEW QUIZ:");
-        string quizName = Console.ReadLine() ?? "";
+
+    static void CreateQuiz()
+    {
+        Console.Clear();
+        Console.CursorVisible = true;
+        Typewriter(">> ENTER NAME FOR NEW QUIZ:");     
+        string? quizName = Console.ReadLine();
         
+        if (string.IsNullOrEmpty(quizName)) return;
         if (!allQuizzes.ContainsKey(quizName)) allQuizzes.Add(quizName, new List<Question>());
-        // Pick the mode for all the questions
-        Console.WriteLine("\nSELECT MODE FOR ALL QUESTIONS IN THIS QUIZ:");
-        Console.WriteLine("1: Easy (T/F) | 2: Medium (MCQ) | 3: Hard (ID)");
-        Console.Write("SELECTION: ");
-        string typeChoice = Console.ReadLine();
+
+        string[] modes = { "Easy (T/F)", "Medium (MCQ)", "Hard (ID)" };
+        int typeChoice = MenuSelector("SELECT MODE FOR ALL QUESTIONS:", modes);
 
         Console.Write(">> HOW MANY QUESTIONS?: ");
         if (!int.TryParse(Console.ReadLine(), out int count)) return;
-
-        // Loop this only ask for answer
+    
         for (int i = 0; i < count; i++)
         {
             Question q = new Question();
-            Console.WriteLine($"\n-- ENTRY {i + 1} --");
-
+                Console.WriteLine($"\n-- ENTRY {i + 1} --");
             Console.Write("INPUT QUESTION: ");
             q.Text = Console.ReadLine();
 
-            if (typeChoice == "1") // EASY
+             if (typeChoice == 0) // Easy
             {
                 q.Difficulty = "Easy";
                 q.Choices = new string[] { "True", "False" };
                 Console.Write("CORRECT ANSWER (T/F): ");
                 q.CorrectAnswer = Console.ReadLine().ToUpper();
             }
-            else if (typeChoice == "2") // MEDIUM
+            else if (typeChoice == 1) // Medium
             {
                 q.Difficulty = "Medium";
                 q.Choices = new string[4];
@@ -152,31 +139,32 @@ class Program
                 Console.Write("CORRECT KEY (A-D): ");
                 q.CorrectAnswer = Console.ReadLine().ToUpper();
             }
-            else // HARD
+            else // Hard
             {
                 q.Difficulty = "Hard";
                 Console.Write("INPUT EXACT CORRECT ANSWER: ");
                 q.CorrectAnswer = Console.ReadLine();
             }
-
-            allQuizzes[quizName].Add(q);        
-            Typewriter("\n>> DATA COMPILED SUCCESSFULLY.");
-            Console.ReadKey();
+            allQuizzes[quizName].Add(q);
         }
+        Console.CursorVisible = false;
+        Typewriter("\n>> DATA COMPILED SUCCESSFULLY.");
+        Console.ReadKey();
     }
+
     static void SelectAndTakeQuiz()
     {
-        Console.Clear();
-        if (allQuizzes.Count == 0) return;
-
-        var quizNames = allQuizzes.Keys.ToList();
-        for (int i = 0; i < quizNames.Count; i++) Console.WriteLine($"{i + 1}. {quizNames[i]}");
-
-        Console.Write("\nSELECTION: ");
-        if (int.TryParse(Console.ReadLine(), out int choice) && choice > 0 && choice <= quizNames.Count)
+        if (allQuizzes.Count == 0)
         {
-            RunQuiz(quizNames[choice - 1]);
+            Console.Clear();
+            Typewriter(">> ERROR: NO QUIZ DATA FOUND.");
+            Console.ReadKey();
+            return;
         }
+
+        var quizNames = allQuizzes.Keys.ToArray();
+        int choice = MenuSelector("SELECT A QUIZ TO BEGIN:", quizNames);
+        RunQuiz(quizNames[choice]);
     }
 
     static void RunQuiz(string name)
@@ -185,32 +173,29 @@ class Program
         int score = 0;
 
         foreach (var q in questions)
+            {
+            string userAnswer = "";
+            if (q.Difficulty == "Easy" || q.Difficulty == "Medium")
+            {
+                // For quiz choices same arrow key selector
+                int choiceIndex = MenuSelector($">> {name} | {q.Difficulty.ToUpper()} <<\n\n{q.Text}", q.Choices);
+                
+                if (q.Difficulty == "Easy")
+                    userAnswer = (choiceIndex == 0) ? "T" : "F";
+                else
+                    userAnswer = ((char)('A' + choiceIndex)).ToString();
+            }
+        else
         {
             Console.Clear();
-            Console.WriteLine($">> ACCESSING: {name} | MODE: {q.Difficulty.ToUpper()} <<");
-            Console.WriteLine("-------------------------------------");
+            Console.CursorVisible = true;
+            Console.WriteLine($">> {name} | HARD <<\n------------------");
             Typewriter(q.Text);
-
-            string userAnswer = "";
-            if (q.Difficulty == "Easy")
-            {
-                Console.WriteLine("A. True\nB. False");
-                Console.Write("\nINPUT (A/B): ");
-                userAnswer = Console.ReadLine().ToUpper();
-                if (userAnswer == "A") userAnswer = "T";
-                else if (userAnswer == "B") userAnswer = "F";
-            }
-            else if (q.Difficulty == "Medium")
-            {
-                for (int i = 0; i < 4; i++) Console.WriteLine($"{(char)('A' + i)}. {q.Choices[i]}");
-                Console.Write("\nSELECTION (A-D): ");
-                userAnswer = Console.ReadLine().ToUpper();
-            }
-            else
-            {
-                Console.Write("\nTYPE YOUR ANSWER: ");
-                userAnswer = Console.ReadLine();
-            }
+            
+            Console.Write("\nTYPE YOUR ANSWER: ");
+            userAnswer = Console.ReadLine();
+            Console.CursorVisible = false;
+        }
 
             if (userAnswer.Trim().Equals(q.CorrectAnswer.Trim(), StringComparison.OrdinalIgnoreCase))
             {
@@ -221,8 +206,8 @@ class Program
             {
                 Console.WriteLine($"\n>> INCORRECT. ANSWER: {q.CorrectAnswer}");
             }
-            Console.WriteLine("PRESS ENTER TO CONTINUE.");
-            Console.ReadLine();
+            Console.WriteLine("PRESS ANY KEY TO CONTINUE.");
+            Console.ReadKey(true);
         }
 
         Console.Clear();
@@ -230,3 +215,4 @@ class Program
         Typewriter($"RESULT: {score} OUT OF {questions.Count} CORRECT.");
         Console.ReadKey();
     }
+}
