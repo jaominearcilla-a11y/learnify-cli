@@ -6,9 +6,9 @@ namespace Learnify_prtp;
 
 class Question
 {
-    public string Text { get; set; }
-    public string[] Choices { get; set; }
-    public string CorrectAnswer { get; set; }
+        public string Text { get; set; }
+        public string[] Choices { get; set; }
+        public string CorrectAnswer { get; set; }
     public string Difficulty { get; set; }
 }
 
@@ -20,7 +20,7 @@ class Program
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.BackgroundColor = ConsoleColor.Black;
-        Console.CursorVisible = false; 
+        Console.CursorVisible = false;  
         Console.Clear();
 
         Typewriter(">> LEARNIFY CORP (TM) TERMLINK 2026");
@@ -112,7 +112,7 @@ class Program
 
         Console.Write(">> HOW MANY QUESTIONS?: ");
         if (!int.TryParse(Console.ReadLine(), out int count)) return;
-    
+
         for (int i = 0; i < count; i++)
         {
             Question q = new Question();
