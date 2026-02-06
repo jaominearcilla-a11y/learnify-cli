@@ -39,7 +39,7 @@ class Program
         }
     }
 
-    // arrow key navitagion
+    // --- THE ARROW KEY NAVIGATION SYSTEM ---
     static int MenuSelector(string title, string[] options)
     {
         int currentIndex = 0;
