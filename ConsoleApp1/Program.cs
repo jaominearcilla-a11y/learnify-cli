@@ -160,10 +160,10 @@ class Program
             }
 
             allQuizzes[quizName].Add(q);        
-        Typewriter("\n>> DATA COMPILED SUCCESSFULLY.");
-        Console.ReadKey();
-   }
-
+            Typewriter("\n>> DATA COMPILED SUCCESSFULLY.");
+            Console.ReadKey();
+        }
+    }
     static void SelectAndTakeQuiz()
     {
         Console.Clear();
@@ -230,4 +230,3 @@ class Program
         Typewriter($"RESULT: {score} OUT OF {questions.Count} CORRECT.");
         Console.ReadKey();
     }
-}
