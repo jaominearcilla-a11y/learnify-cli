@@ -363,7 +363,7 @@ class Program
                     "PURGE DATABANK (DELETE QUIZ)", 
                     "EXIT TERMINAL" 
                 }, 
-                "AWAITING COMMAND:");
+                "AWAITING COMMAND:USE UP/DOWN ARROWS & PRESS ENTER");
 
             switch (selected)
             {
